@@ -1,7 +1,6 @@
 #include <iostream>
 #include<cstdio>
 #include<cstdlib>
-
 using namespace std;
 
 struct node
@@ -11,8 +10,8 @@ struct node
 
 struct treeNode
 {
-	node *interval;
 	int max;
+	node *interval;
 	treeNode *left, *right;
 };
 
@@ -94,10 +93,9 @@ bool overlap(node interval1, node interval2)
 node *overlapSearch(treeNode *root, node interval)
 {
 	if (root == NULL) return NULL;
-
 	if (overlap(*(root->interval), interval))
 		{
-		    cout << "\nOverlaps with [" << root->interval->low << ", " << root->interval->high << "]";
+		   cout << "\nOverlaps with [" << root->interval->low << ", " << root->interval->high << "]";
 		}
 	if (root->left != NULL && root->left->max >= interval.low)
         overlapSearch(root->left, interval);
@@ -107,12 +105,8 @@ node *overlapSearch(treeNode *root, node interval)
 void inorder(treeNode *root)
 {
 	if (root == NULL) return;
-
 	inorder(root->left);
-
-	cout << "[" << root->interval->low << ", " << root->interval->high << "]"
-		<< " max = " << root->max << endl;
-
+	cout << "[" << root->interval->low << ", " << root->interval->high << "]"<< " max = " << root->max << endl;
 	inorder(root->right);
 }
 int update_max(treeNode* root)
@@ -124,7 +118,6 @@ int update_max(treeNode* root)
         root->max=root->interval->high;
         return root->max;
     }
-
     int templ=update_max(root->left);
     int tempr=update_max(root->right);
     root->max=max(root->interval->high,max(templ,tempr));
@@ -137,7 +130,7 @@ int main()
 {
     int n;
     n=6;
-    cout << "Number of nodes to start the tree "<<n<<endl;
+    	cout << "Number of nodes to start the tree "<<n<<endl;
 	node intervals[] = {{15, 20}, {10, 30}, {17, 19},{5, 20}, {12, 15}, {30, 40}};
 	treeNode *root = NULL;
 	for (int i = 0; i < n; i++)
@@ -145,25 +138,33 @@ int main()
 
 	cout << "In-order traversal of constructed Interval Tree is\n";
 	inorder(root);
-
+// performing first set of search operation
 	node x1 = {14,16};
 	cout << "\n\nSearching for interval [" << x1.low << "," << x1.high << "]";
-	node *res1 = overlapSearch(root, x1);
+	node *search1 = overlapSearch(root, x1);
+	if (search1 == NULL)
+		cout << "  No overlaps";
 	node x2 = {21,23};
 	cout << "\n\nSearching for interval [" << x2.low << "," << x2.high << "]";
-    node *res2 = overlapSearch(root, x2);
-    cout<<"\n\n\n\n";
-    //Pass the low-value of the interval to be deleted
-    cout << "\nDeleting interval [30,40]"<<endl;
-    root = deleteNode(root,10);
-    int new_max;
-    new_max = update_max(root);
-    cout << "In-order traversal of updated Interval Tree is\n";
-    inorder(root);
-    cout << "\n\nSearching for interval [" << x1.low << "," << x1.high << "]";
-	node *res3 = overlapSearch(root, x1);
+    	node *search2 = overlapSearch(root, x2);
+	if (search2 == NULL)
+		cout << "  No overlaps";
+    	cout<<"\n\n\n\n";
+  //Pass the low-value of the interval to be deleted
+    	cout << "\nDeleting interval [30,40]"<<endl;
+    	root = deleteNode(root,10);
+    	int new_max;
+    	new_max = update_max(root);
+    	cout << "In-order traversal of updated Interval Tree is\n";
+    	inorder(root);
+	
+// performing second set of search operation	
+    	cout << "\n\nSearching for interval [" << x1.low << "," << x1.high << "]";
+	node *search3 = overlapSearch(root, x1);
+	if (search3 == NULL)
+		cout << "  No overlaps";
 	cout << "\n\nSearching for interval [" << x2.low << "," << x2.high << "]";
-    node *res4 = overlapSearch(root, x2);
-	if (res4 == NULL)
-		cout << "  No Overlapping Interval";
+    	node *search4 = overlapSearch(root, x2);
+	if (search4 == NULL)
+		cout << "  No overlaps";
 }
