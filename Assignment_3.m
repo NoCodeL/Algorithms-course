@@ -34,7 +34,7 @@ for v = 1:n_ver(2)
             localR = [];
             A = zeros(V(v),V(v));
             edges = randi([1,V(v)],E(e),2);
-            edge_weights = randi([1,50],1,E(e));
+            edge_weights = randi([-50,50],1,E(e));
             for i = 1:E(e)
                 if edges(i,1)== edges(i,2)
                     edge_weights(1,i) = 0;
